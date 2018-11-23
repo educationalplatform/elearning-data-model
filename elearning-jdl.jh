@@ -1,0 +1,156 @@
+entity MediaType {
+	name String,
+    description String,
+    extensionList String
+}
+
+entity MediaFile {
+	mediaType MediaType,
+    url String,
+    useInfo String
+}
+
+entity Resource {
+	name String,
+	mediaFile MediaFile
+}
+
+entity Field {
+	name String,
+    description String
+}
+
+entity ProfileType {
+	name String,
+    description String
+}
+
+entity User {
+	username String,
+	password String,
+	email String,
+	status UserStatus,
+	startDate Instant
+}
+
+entity UserProfile {
+	user User,
+    firstName String,
+    lastName String,
+    profession String,
+    age String,
+    profileType ProfileType,
+    company String,
+   startDate Instant
+}
+entity Department {
+	name String,
+    description String
+}
+
+entity Company {
+	name String,
+    description String,
+    address String,
+    webUrl String,
+    fieldList Field,
+    departmentList Department,
+    employeesNumber String
+}
+
+entity Topic {
+	name String,
+    description String
+}
+entity QuestionType {
+	name String,
+	description String,    
+	startDate Instant
+}
+entity Question {
+	statement String,
+    questionType QuestionType,
+    posibleChoices String,
+    content String,
+    correctChoices String,
+    point String
+}
+entity Evaluation {
+	name String,
+    instructions String,
+    totalPoints String,
+    aprobalPoints String,
+    topicList Topic,
+    instructions String,
+    instructions String,
+    evaluationList Question,
+    autoReviewed String,
+    startDate Instant
+    
+}
+entity Module {
+	name String,
+	description String,   
+    evaluationList Evaluation,
+    resourceList Resource
+
+}
+entity Course {
+	name String,
+    code String,
+    preRequisites String,
+    description String,
+    company Company,
+    moduleList Module
+}
+entity EvaluationInstance {
+	evaluation String,
+    mentorList UserProfile,
+    mentee UserProfile,
+    course Course,
+    startDate Instant,
+    endDate Instant,
+    gainedPoints String,
+    created Instant
+    
+}
+entity CourseInstance {
+	course Course,
+    accumulatedPoints String,
+    evaluationInstanceList EvaluationInstance
+}
+entity Subscription {
+	accountId Integer,
+    courseIdList Integer,
+	subscriptionType SubscriptionPlan,
+    activationDate String,
+    expirationDate String
+    
+}
+enum SubscriptionPlan {
+	FREE, ASOCIATE, PREMIUM
+}
+enum QuestionOption {
+    MULTIPLE_CHOICE, SINGLE_CHOICE, CODING, FREE_TEXT
+}
+enum UserStatus {
+    ACTIVE, INACTIVE
+}
+enum Language {
+    ENGLISH, SPANISH
+}
+
+
+
+// Set pagination options
+paginate User with infinite-scroll
+paginate Course with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl //except Course, Job
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
